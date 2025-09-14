@@ -2,7 +2,8 @@ import sys
 import ee
 import geemap
 from aoi import get_aoi_bbox
-from tqdm import tqdm
+
+ee.Authenticate()
 
 ee.Initialize(project="helical-sanctum-451207-m5")
 

@@ -7,7 +7,7 @@ This repository contains the source code for the Tarramapdater application.
 ### Environment and Dependency Setup
 
 ```shell
-conda create --prefix ./tmpdtr
+conda create --prefix ./tmpdtr python=3.11
 conda activate ./tmpdtr
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126 # CUDA-enabled torch
 pip install segmentation-models-pytorch albumentations pyqt6

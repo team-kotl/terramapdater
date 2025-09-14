@@ -54,6 +54,15 @@ def run_pipeline():
     print("✂️ Clipping raster with boundary...")
     gdal.Warp(
         clipped_tif,
+        f"../../assets/raw/raw.tif",
+        cutlineDSName=boundary_gpkg,
+        cropToCutline=True,
+        dstNodata=0,  # or np.nan
+        dstSRS=target_crs,
+        creationOptions=["COMPRESS=LZW", "BIGTIFF=YES"],  # ✅ fix here
+    )
+    gdal.Warp(
+        clipped_tif,
         merged_tif,
         cutlineDSName=boundary_gpkg,
         cropToCutline=True,

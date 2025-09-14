@@ -2,6 +2,7 @@ import sys
 import ee
 import geemap
 from aoi import get_aoi_bbox
+from tqdm import tqdm
 
 ee.Initialize(project="helical-sanctum-451207-m5")
 
@@ -9,9 +10,6 @@ AOI = ee.Geometry.Rectangle(get_aoi_bbox())
 YEAR = None
 START_DATE = None
 END_DATE = None
-# YEAR = 2018
-# START_DATE = f"2016-04-08"
-# END_DATE = f"2018-12-31"
 CLOUD_FILTER = 100
 CLD_PRB_THRESH = 50
 NIR_DRK_THRESH = 0.15
@@ -137,10 +135,9 @@ def run_pipeline():
     grid = make_grid(AOI, dx_km=10, dy_km=10)
     features = grid.toList(grid.size())
     n = grid.size().getInfo()
-    from tqdm import tqdm
 
     # Local export instead of Google Drive
-    for i in tqdm(range(n), desc="Downloading tiles"):
+    for i in range(n):
         tile = ee.Feature(features.get(i)).geometry()
         count = masked.filterBounds(tile).size().getInfo()
         if count == 0:

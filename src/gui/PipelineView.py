@@ -49,8 +49,8 @@ class PipelineView(QWidget):
         self.scripts = [
             ("Downloading Satellite Imagery", "scripts/get-imagery.py"),
             ("Combining and Clipping Tiles", "scripts/combine-tiles.py"),
-            ("Fine-tuning Model", "scripts/train.py"),
-            ("Generating Land Cover Map", "scripts/eval.py"),
+            ("Generating Land Cover Map", "scripts/use.py"),
+            ("Fine Tuning Model", "scripts/train.py"),
             ("Generating Areas", "scripts/extract-areas.py"),
             ("Transferring to Backend", "scripts/transfer-file.py"),
         ]

@@ -1,2 +1,7 @@
 tmpdtr
 __pycache__
+assets/raw
+assets/result
+assets/tiles
+assets/truth
+assets/temp

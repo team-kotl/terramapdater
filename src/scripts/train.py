@@ -8,11 +8,10 @@ from torch.utils.data import Dataset, DataLoader
 from patchify import patchify
 from sklearn.model_selection import train_test_split
 import segmentation_models_pytorch as smp
-import sys
 
 # Configuration
-RAW_PATH = None
-TRUTH_PATH = None
+RAW_PATH = "../../assets/raw/raw.tif"
+TRUTH_PATH = "../../assets/truth/truth.tif"
 PATCH_SIZE = 256
 BATCH_SIZE = 12
 NUM_EPOCHS = 15
@@ -203,14 +202,14 @@ def main():
     best_val_loss = float("inf")
 
     # Resume training if checkpoint exists
-    checkpoint_path = "models/model-effnet.pth"
+    checkpoint_path = "../model/model.pth"
     if os.path.exists(checkpoint_path):
         print("Resuming from checkpoint...")
         checkpoint = torch.load(checkpoint_path, map_location=device)
-        model.load_state_dict(checkpoint['model_state_dict'])
-        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        start_epoch = checkpoint['epoch'] + 1
-        best_val_loss = checkpoint['val_loss']
+        model.load_state_dict(checkpoint["model_state_dict"])
+        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+        start_epoch = checkpoint["epoch"] + 1
+        best_val_loss = checkpoint["val_loss"]
 
     for epoch in range(start_epoch, start_epoch + NUM_EPOCHS):
         model.train()
@@ -242,12 +241,15 @@ def main():
         # Save best model
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'val_loss': best_val_loss,
-            }, "models/model-effnet.pth")
+            torch.save(
+                {
+                    "epoch": epoch,
+                    "model_state_dict": model.state_dict(),
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "val_loss": best_val_loss,
+                },
+                "../model/model.pth",
+            )
 
         print(
             f"Epoch {epoch+1}/{start_epoch + NUM_EPOCHS} | "
@@ -257,8 +259,8 @@ def main():
 
     # Final test evaluation
     print("\nStarting final evaluation on test set...")
-    checkpoint = torch.load("models/model-effnet.pth", map_location=device)
-    model.load_state_dict(checkpoint['model_state_dict'])
+    checkpoint = torch.load("../model/model.pth", map_location=device)
+    model.load_state_dict(checkpoint["model_state_dict"])
     model.eval()
 
     test_loss = 0.0
@@ -298,11 +300,4 @@ def main():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        YEAR = int(sys.argv[1])
-        RAW_PATH = f"raw/{YEAR}.tif"
-        TRUTH_PATH = f"truth/{YEAR}.tif"
-        main()
-    else:
-        print("No year provided.")
     main()

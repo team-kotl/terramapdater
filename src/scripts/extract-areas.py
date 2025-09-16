@@ -74,7 +74,7 @@ def run_pipeline():
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        SOURCE_TIF = sys.argv[1]
+        SOURCE_TIF = f"../../assets/truth/truth.tif"
         run_pipeline()
     else:
         print("No TIF provided.")

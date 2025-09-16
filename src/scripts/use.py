@@ -8,7 +8,7 @@ from datetime import datetime
 
 RAW_PATH = "../../assets/raw/raw.tif"
 OUTPUT_PATH = "../../assets/truth/truth.tif"
-CHECKPOINT_PATH = "../model/model.pth"
+CHECKPOINT_PATH = "../../model/model.pth"
 PATCH_SIZE = 256
 NUM_CLASSES = 8
 

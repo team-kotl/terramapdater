@@ -134,7 +134,7 @@ def run_pipeline():
     cloudless = masked.median()
     true_color = cloudless.select(["B4", "B3", "B2", "B8"])
 
-    grid = make_grid(AOI, dx_km=5, dy_km=5)
+    grid = make_grid(AOI, dx_km=10, dy_km=10)
     features = grid.toList(grid.size())
     n = grid.size().getInfo()
 

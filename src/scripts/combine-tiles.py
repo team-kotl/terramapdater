@@ -53,13 +53,13 @@ def run_pipeline():
     # 🔹 Clip using boundary.gpkg
     print("✂️ Clipping raster with boundary...")
     gdal.Warp(
-        clipped_tif,
         f"../../assets/raw/raw.tif",
+        merged_tif,
         cutlineDSName=boundary_gpkg,
         cropToCutline=True,
         dstNodata=0,  # or np.nan
         dstSRS=target_crs,
-        creationOptions=["COMPRESS=LZW", "BIGTIFF=YES"],  # ✅ fix here
+        creationOptions=["BIGTIFF=YES"],  # ✅ fix here
     )
     gdal.Warp(
         clipped_tif,
@@ -68,15 +68,13 @@ def run_pipeline():
         cropToCutline=True,
         dstNodata=0,  # or np.nan
         dstSRS=target_crs,
-        creationOptions=["COMPRESS=LZW", "BIGTIFF=YES"],  # ✅ fix here
+        creationOptions=["BIGTIFF=YES"],  # ✅ fix here
     )
     print(f"✅ Clipped raster saved as {clipped_tif}")
 
-    os.remove(f"../../assets/temp/merged_{YEAR}.vrt")
+    os.remove(f"../../assets/temp/merged_{YEAR}.tif")
 
     print(f"✅ Deleted merged mosaic")
-    
-    print(f"✅ Deleted tiles")
     
     for filename in glob.glob(os.path.join(tiles_dir, "*.*")):
         try:
@@ -84,6 +82,8 @@ def run_pipeline():
             print(f"Removed: {filename}")
         except OSError as e:
             print(f"Error removing {filename}: {e}")
+    
+    print(f"✅ Deleted tiles")
 
 
 if __name__ == "__main__":

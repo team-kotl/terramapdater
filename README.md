@@ -12,4 +12,5 @@ conda activate ./tmpdtr
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126 # CUDA-enabled torch
 pip install segmentation-models-pytorch albumentations pyqt6
 conda install -c conda-forge --file requirements.txt
+conda install -c bioconda patchify
 ```

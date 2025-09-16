@@ -2,10 +2,11 @@ import sys
 import ee
 import geemap
 from aoi import get_aoi_bbox
+from tqdm import tqdm
 
 ee.Authenticate()
 
-ee.Initialize(project="helical-sanctum-451207-m5")
+ee.Initialize(project="original-circle-472312-v0")
 
 AOI = ee.Geometry.Rectangle(get_aoi_bbox())
 YEAR = None
@@ -133,12 +134,12 @@ def run_pipeline():
     cloudless = masked.median()
     true_color = cloudless.select(["B4", "B3", "B2", "B8"])
 
-    grid = make_grid(AOI, dx_km=10, dy_km=10)
+    grid = make_grid(AOI, dx_km=5, dy_km=5)
     features = grid.toList(grid.size())
     n = grid.size().getInfo()
 
     # Local export instead of Google Drive
-    for i in range(n):
+    for i in tqdm(range(n), desc="Downloading Tiles"):
         tile = ee.Feature(features.get(i)).geometry()
         count = masked.filterBounds(tile).size().getInfo()
         if count == 0:
@@ -150,6 +151,7 @@ def run_pipeline():
             filename=out_tif,
             scale=10,
             crs="EPSG:32651",
+            quiet=True,
             region=tile,
         )
 
@@ -157,9 +159,12 @@ def run_pipeline():
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         arg = sys.argv[1]
-        YEAR = int(arg)
-        START_DATE = f"{YEAR}-04-01"
-        END_DATE = f"{YEAR+1}-02-01"
+        # YEAR = int(arg)
+        # START_DATE = f"{YEAR}-04-01"
+        # END_DATE = f"{YEAR+1}-02-01"
+        YEAR = 2021
+        START_DATE = f"{YEAR}-03-15"
+        END_DATE = f"{YEAR}-10-20"
         run_pipeline()
     else:
         print("No year provided.")

@@ -151,7 +151,6 @@ def run_pipeline():
             filename=out_tif,
             scale=10,
             crs="EPSG:32651",
-            quiet=True,
             region=tile,
         )
 
